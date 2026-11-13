@@ -23,3 +23,54 @@ DataCircuit is a lightweight, modular backend service designed to ingest, valida
    ```bash
    git clone [https://github.com/pratyushdk007/DataCircuit.git](https://github.com/pratyushdk007/DataCircuit.git)
    cd DataCircuit
+
+   # DataCircuit
+
+Autonomous Data Failure Containment Engine.
+
+## Week 2 Features
+
+- PostgreSQL event storage
+- Prisma ORM integration
+- Persistent accepted events
+- Persistent quarantined events
+- Database-level duplicate protection
+- QuickBite payment event simulator
+- Event retrieval APIs
+- Basic pagination
+
+## Tech Stack
+
+- Node.js
+- Express.js
+- PostgreSQL
+- Prisma ORM
+- JavaScript
+
+## Run Locally
+
+Install dependencies:
+
+npm install
+
+Configure DATABASE_URL in .env.
+
+Run database migration:
+
+npx prisma@7 migrate dev
+
+Generate Prisma Client:
+
+npx prisma@7 generate
+
+Start server:
+
+npm run dev
+
+Generate 1000 events:
+
+npm run events:generate -- 1000
+
+Run tests:
+
+npm test
