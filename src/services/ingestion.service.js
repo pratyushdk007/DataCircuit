@@ -1,38 +1,41 @@
 import { randomUUID } from "node:crypto";
+
+import { prisma } from "../config/prisma.js";
 import { validateEvent } from "../validators/event.validator.js";
 
-// Temporary storage
-const acceptedEvents = new Map();
-const quarantinedEvents = [];
-
-export function ingestEvent(event) {
+export async function ingestEvent(event) {
   const eventId =
     typeof event?.eventId === "string"
       ? event.eventId.trim()
-      : "";
+      : null;
 
-  // Prevent an already-accepted event from being processed again.
-  if (eventId && acceptedEvents.has(eventId)) {
-    return {
-      type: "duplicate",
-      eventId
-    };
+  // Check whether this event was already accepted.
+  if (eventId) {
+    const existing = await prisma.acceptedEvent.findUnique({
+      where: { eventId }
+    });
+
+    if (existing) {
+      return {
+        type: "duplicate",
+        eventId
+      };
+    }
   }
 
-  // Validate the event
+  // Validate incoming event.
   const errors = validateEvent(event);
 
-  // Invalid events go to quarantine.
+  // Save invalid event in PostgreSQL.
   if (errors.length > 0) {
-    const record = {
-      quarantineId: randomUUID(),
-      eventId: eventId || null,
-      receivedAt: new Date().toISOString(),
-      reasons: errors,
-      rawEvent: event ?? null
-    };
-
-    quarantinedEvents.push(record);
+    const record = await prisma.quarantinedEvent.create({
+      data: {
+        id: randomUUID(),
+        eventId,
+        reasons: errors,
+        rawEvent: event ?? {}
+      }
+    });
 
     return {
       type: "quarantined",
@@ -40,33 +43,74 @@ export function ingestEvent(event) {
     };
   }
 
-  // Valid events are accepted.
-  const record = {
-    ...event,
-    eventId,
-    receivedAt: new Date().toISOString(),
-    status: "ACCEPTED"
-  };
+  try {
+    // Save valid event in PostgreSQL.
+    const record = await prisma.acceptedEvent.create({
+      data: {
+        eventId,
+        eventType: event.eventType,
+        source: event.source,
+        occurredAt: new Date(event.occurredAt),
+        orderId: event.payload.orderId,
+        amountPaise: event.payload.amountPaise,
+        currency: event.payload.currency,
+        paymentStatus: event.payload.paymentStatus,
+        payload: event.payload
+      }
+    });
 
-  acceptedEvents.set(eventId, record);
+    return {
+      type: "accepted",
+      record
+    };
 
-  return {
-    type: "accepted",
-    record
-  };
+  } catch (error) {
+    // PostgreSQL uniqueness violation.
+    // P2002 is Prisma's unique-constraint error.
+    if (error?.code === "P2002") {
+      return {
+        type: "duplicate",
+        eventId
+      };
+    }
+
+    throw error;
+  }
 }
 
-// Retrieve all accepted events
-export function listEvents() {
-  return Array.from(acceptedEvents.values());
+// Retrieve accepted events.
+export async function listEvents(limit = 50) {
+  return prisma.acceptedEvent.findMany({
+    orderBy: {
+      receivedAt: "desc"
+    },
+    take: limit
+  });
 }
 
-// Retrieve one event
-export function getEventById(eventId) {
-  return acceptedEvents.get(eventId);
+// Count accepted events.
+export async function countAcceptedEvents() {
+  return prisma.acceptedEvent.count();
 }
 
-// Retrieve quarantined events
-export function listQuarantinedEvents() {
-  return [...quarantinedEvents];
+// Retrieve one accepted event.
+export async function getEventById(eventId) {
+  return prisma.acceptedEvent.findUnique({
+    where: { eventId }
+  });
+}
+
+// Retrieve quarantined events.
+export async function listQuarantinedEvents(limit = 50) {
+  return prisma.quarantinedEvent.findMany({
+    orderBy: {
+      receivedAt: "desc"
+    },
+    take: limit
+  });
+}
+
+// Count quarantined events.
+export async function countQuarantinedEvents() {
+  return prisma.quarantinedEvent.count();
 }

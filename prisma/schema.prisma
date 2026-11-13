@@ -1,0 +1,39 @@
+generator client {
+  provider        = "prisma-client"
+  output          = "../src/generated/prisma"
+  moduleFormat    = "esm"
+  generatedFileExtension = "ts"
+  importFileExtension    = "ts"
+}
+
+datasource db {
+  provider = "postgresql"
+
+}
+
+model AcceptedEvent {
+  eventId       String   @id
+  eventType     String
+  source        String
+  occurredAt    DateTime
+  receivedAt    DateTime @default(now())
+  orderId       String
+  amountPaise   Int
+  currency      String
+  paymentStatus String
+  payload       Json
+
+  @@index([receivedAt])
+  @@index([orderId])
+}
+
+model QuarantinedEvent {
+  id         String   @id @default(uuid())
+  eventId    String?
+  receivedAt DateTime @default(now())
+  reasons    String[]
+  rawEvent   Json
+
+  @@index([eventId])
+  @@index([receivedAt])
+}
