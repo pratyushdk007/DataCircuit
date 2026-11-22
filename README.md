@@ -74,3 +74,47 @@ npm run events:generate -- 1000
 Run tests:
 
 npm test
+
+# DataCircuit
+
+Autonomous Data Failure Containment Engine.
+
+## Week 3 Features
+
+- Versioned payment event contracts
+- Schema drift detection
+- Required field validation
+- Unexpected field detection
+- Business-rule validation
+- Cross-field consistency checks
+- Statistical payment anomaly detection
+- IQR-based outlier detection
+- Data quality profiling API
+- Expanded automated tests
+
+## Data Quality Engine
+
+The Data Quality Engine evaluates incoming events
+through three stages:
+
+1. Schema validation
+2. Business-rule validation
+3. Statistical anomaly detection
+
+Invalid or suspicious records are preserved
+in the quarantine table for investigation.
+
+## Quality Profile API
+
+GET /api/v1/quality/profile
+
+Returns statistical information about accepted
+payment amounts.
+
+## Testing
+
+npm test
+
+## Event Simulation
+
+npm run events:generate -- 1000
