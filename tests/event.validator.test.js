@@ -4,10 +4,12 @@ import assert from "node:assert/strict";
 import { validateEvent } from "../src/validators/event.validator.js";
 
 const validEvent = {
+  schemaVersion: "payment.v1",
   eventId: "evt_test_001",
   eventType: "payment.succeeded",
   source: "payment-service",
-  occurredAt: "2026-11-07T09:30:00.000Z",
+  occurredAt: "2026-11-15T10:30:00.000Z",
+
   payload: {
     orderId: "ORD101",
     amountPaise: 25000,
@@ -16,11 +18,11 @@ const validEvent = {
   }
 };
 
-test("valid payment event should pass", () => {
+test("valid event passes all validation", () => {
   assert.deepEqual(validateEvent(validEvent), []);
 });
 
-test("negative amount should fail", () => {
+test("negative amount fails business validation", () => {
   const event = {
     ...validEvent,
     payload: {
@@ -29,28 +31,44 @@ test("negative amount should fail", () => {
     }
   };
 
-  const errors = validateEvent(event);
+  const issues = validateEvent(event);
 
   assert.ok(
-    errors.includes("amountPaise must be a positive integer")
+    issues.some(issue => issue.code === "INVALID_AMOUNT")
   );
 });
 
-test("missing order ID should fail", () => {
+test("missing schema field is detected", () => {
+  const event = { ...validEvent };
+
+  delete event.schemaVersion;
+
+  const issues = validateEvent(event);
+
+  assert.ok(
+    issues.some(issue => issue.code === "MISSING_FIELD")
+  );
+});
+
+test("unknown payload field is detected", () => {
   const event = {
     ...validEvent,
     payload: {
       ...validEvent.payload,
-      orderId: ""
+      unexpectedField: "unknown"
     }
   };
 
-  const errors = validateEvent(event);
+  const issues = validateEvent(event);
 
-  assert.ok(errors.includes("orderId is required"));
+  assert.ok(
+    issues.some(
+      issue => issue.code === "UNEXPECTED_PAYLOAD_FIELD"
+    )
+  );
 });
 
-test("mismatched payment status should fail", () => {
+test("inconsistent payment status is detected", () => {
   const event = {
     ...validEvent,
     payload: {
@@ -59,9 +77,9 @@ test("mismatched payment status should fail", () => {
     }
   };
 
-  const errors = validateEvent(event);
+  const issues = validateEvent(event);
 
   assert.ok(
-    errors.includes("Payment status does not match event type")
+    issues.some(issue => issue.code === "PAYMENT_STATUS_MISMATCH")
   );
 });

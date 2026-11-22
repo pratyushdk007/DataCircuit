@@ -72,6 +72,7 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 
 export const AcceptedEventScalarFieldEnum = {
+  schemaVersion: 'schemaVersion',
   eventId: 'eventId',
   eventType: 'eventType',
   source: 'source',

@@ -1,5 +1,4 @@
 import { randomUUID } from "node:crypto";
-
 const API_URL = "http://localhost:3000/api/v1/events";
 
 const requestedCount = Number.parseInt(
@@ -24,6 +23,8 @@ for (let i = 1; i <= count; i++) {
 
   const isFailedPayment = i % 2 === 0;
   const isCorrupted = i % 10 === 0;
+  const isUnitShifted =
+  i % 37 === 0 && !isCorrupted;
 
   const eventType = isFailedPayment
     ? "payment.failed"
@@ -39,14 +40,22 @@ for (let i = 1; i <= count; i++) {
 
   // Introduce an intentional data error.
   if (isCorrupted) {
-    amountPaise = -amountPaise;
-  }
+  // Deterministic business-rule failure.
+  amountPaise = -amountPaise;
+ }
+
+  else if (isUnitShifted) {
+  // Structurally valid but statistically unusual.
+  // Simulates a rupees-to-paise conversion error.
+  amountPaise = amountPaise * 100;
+ }
 
   const event = {
     eventId: `evt_sim_${randomUUID()}`,
     eventType,
     source: "payment-service",
     occurredAt: new Date().toISOString(),
+    schemaVersion: "payment.v1",
 
     payload: {
       orderId: `ORD_SIM_${i}`,
@@ -93,7 +102,7 @@ for (let i = 1; i <= count; i++) {
 
     // Submit some valid events a second time.
     // This tests duplicate protection.
-    if (i % 25 === 0 && !isCorrupted) {
+    if (i % 25 === 0 && !isCorrupted&& !isUnitShifted) {
 
       const duplicateResponse = await fetch(API_URL, {
         method: "POST",

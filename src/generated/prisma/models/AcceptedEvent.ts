@@ -35,6 +35,7 @@ export type AcceptedEventSumAggregateOutputType = {
 }
 
 export type AcceptedEventMinAggregateOutputType = {
+  schemaVersion: string | null
   eventId: string | null
   eventType: string | null
   source: string | null
@@ -47,6 +48,7 @@ export type AcceptedEventMinAggregateOutputType = {
 }
 
 export type AcceptedEventMaxAggregateOutputType = {
+  schemaVersion: string | null
   eventId: string | null
   eventType: string | null
   source: string | null
@@ -59,6 +61,7 @@ export type AcceptedEventMaxAggregateOutputType = {
 }
 
 export type AcceptedEventCountAggregateOutputType = {
+  schemaVersion: number
   eventId: number
   eventType: number
   source: number
@@ -82,6 +85,7 @@ export type AcceptedEventSumAggregateInputType = {
 }
 
 export type AcceptedEventMinAggregateInputType = {
+  schemaVersion?: true
   eventId?: true
   eventType?: true
   source?: true
@@ -94,6 +98,7 @@ export type AcceptedEventMinAggregateInputType = {
 }
 
 export type AcceptedEventMaxAggregateInputType = {
+  schemaVersion?: true
   eventId?: true
   eventType?: true
   source?: true
@@ -106,6 +111,7 @@ export type AcceptedEventMaxAggregateInputType = {
 }
 
 export type AcceptedEventCountAggregateInputType = {
+  schemaVersion?: true
   eventId?: true
   eventType?: true
   source?: true
@@ -206,6 +212,7 @@ export type AcceptedEventGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 }
 
 export type AcceptedEventGroupByOutputType = {
+  schemaVersion: string
   eventId: string
   eventType: string
   source: string
@@ -242,6 +249,7 @@ export type AcceptedEventWhereInput = {
   AND?: Prisma.AcceptedEventWhereInput | Prisma.AcceptedEventWhereInput[]
   OR?: Prisma.AcceptedEventWhereInput[]
   NOT?: Prisma.AcceptedEventWhereInput | Prisma.AcceptedEventWhereInput[]
+  schemaVersion?: Prisma.StringFilter<"AcceptedEvent"> | string
   eventId?: Prisma.StringFilter<"AcceptedEvent"> | string
   eventType?: Prisma.StringFilter<"AcceptedEvent"> | string
   source?: Prisma.StringFilter<"AcceptedEvent"> | string
@@ -255,6 +263,7 @@ export type AcceptedEventWhereInput = {
 }
 
 export type AcceptedEventOrderByWithRelationInput = {
+  schemaVersion?: Prisma.SortOrder
   eventId?: Prisma.SortOrder
   eventType?: Prisma.SortOrder
   source?: Prisma.SortOrder
@@ -272,6 +281,7 @@ export type AcceptedEventWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.AcceptedEventWhereInput | Prisma.AcceptedEventWhereInput[]
   OR?: Prisma.AcceptedEventWhereInput[]
   NOT?: Prisma.AcceptedEventWhereInput | Prisma.AcceptedEventWhereInput[]
+  schemaVersion?: Prisma.StringFilter<"AcceptedEvent"> | string
   eventType?: Prisma.StringFilter<"AcceptedEvent"> | string
   source?: Prisma.StringFilter<"AcceptedEvent"> | string
   occurredAt?: Prisma.DateTimeFilter<"AcceptedEvent"> | Date | string
@@ -284,6 +294,7 @@ export type AcceptedEventWhereUniqueInput = Prisma.AtLeast<{
 }, "eventId">
 
 export type AcceptedEventOrderByWithAggregationInput = {
+  schemaVersion?: Prisma.SortOrder
   eventId?: Prisma.SortOrder
   eventType?: Prisma.SortOrder
   source?: Prisma.SortOrder
@@ -305,6 +316,7 @@ export type AcceptedEventScalarWhereWithAggregatesInput = {
   AND?: Prisma.AcceptedEventScalarWhereWithAggregatesInput | Prisma.AcceptedEventScalarWhereWithAggregatesInput[]
   OR?: Prisma.AcceptedEventScalarWhereWithAggregatesInput[]
   NOT?: Prisma.AcceptedEventScalarWhereWithAggregatesInput | Prisma.AcceptedEventScalarWhereWithAggregatesInput[]
+  schemaVersion?: Prisma.StringWithAggregatesFilter<"AcceptedEvent"> | string
   eventId?: Prisma.StringWithAggregatesFilter<"AcceptedEvent"> | string
   eventType?: Prisma.StringWithAggregatesFilter<"AcceptedEvent"> | string
   source?: Prisma.StringWithAggregatesFilter<"AcceptedEvent"> | string
@@ -318,6 +330,7 @@ export type AcceptedEventScalarWhereWithAggregatesInput = {
 }
 
 export type AcceptedEventCreateInput = {
+  schemaVersion?: string
   eventId: string
   eventType: string
   source: string
@@ -331,6 +344,7 @@ export type AcceptedEventCreateInput = {
 }
 
 export type AcceptedEventUncheckedCreateInput = {
+  schemaVersion?: string
   eventId: string
   eventType: string
   source: string
@@ -344,6 +358,7 @@ export type AcceptedEventUncheckedCreateInput = {
 }
 
 export type AcceptedEventUpdateInput = {
+  schemaVersion?: Prisma.StringFieldUpdateOperationsInput | string
   eventId?: Prisma.StringFieldUpdateOperationsInput | string
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.StringFieldUpdateOperationsInput | string
@@ -357,6 +372,7 @@ export type AcceptedEventUpdateInput = {
 }
 
 export type AcceptedEventUncheckedUpdateInput = {
+  schemaVersion?: Prisma.StringFieldUpdateOperationsInput | string
   eventId?: Prisma.StringFieldUpdateOperationsInput | string
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.StringFieldUpdateOperationsInput | string
@@ -370,6 +386,7 @@ export type AcceptedEventUncheckedUpdateInput = {
 }
 
 export type AcceptedEventCreateManyInput = {
+  schemaVersion?: string
   eventId: string
   eventType: string
   source: string
@@ -383,6 +400,7 @@ export type AcceptedEventCreateManyInput = {
 }
 
 export type AcceptedEventUpdateManyMutationInput = {
+  schemaVersion?: Prisma.StringFieldUpdateOperationsInput | string
   eventId?: Prisma.StringFieldUpdateOperationsInput | string
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.StringFieldUpdateOperationsInput | string
@@ -396,6 +414,7 @@ export type AcceptedEventUpdateManyMutationInput = {
 }
 
 export type AcceptedEventUncheckedUpdateManyInput = {
+  schemaVersion?: Prisma.StringFieldUpdateOperationsInput | string
   eventId?: Prisma.StringFieldUpdateOperationsInput | string
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.StringFieldUpdateOperationsInput | string
@@ -409,6 +428,7 @@ export type AcceptedEventUncheckedUpdateManyInput = {
 }
 
 export type AcceptedEventCountOrderByAggregateInput = {
+  schemaVersion?: Prisma.SortOrder
   eventId?: Prisma.SortOrder
   eventType?: Prisma.SortOrder
   source?: Prisma.SortOrder
@@ -426,6 +446,7 @@ export type AcceptedEventAvgOrderByAggregateInput = {
 }
 
 export type AcceptedEventMaxOrderByAggregateInput = {
+  schemaVersion?: Prisma.SortOrder
   eventId?: Prisma.SortOrder
   eventType?: Prisma.SortOrder
   source?: Prisma.SortOrder
@@ -438,6 +459,7 @@ export type AcceptedEventMaxOrderByAggregateInput = {
 }
 
 export type AcceptedEventMinOrderByAggregateInput = {
+  schemaVersion?: Prisma.SortOrder
   eventId?: Prisma.SortOrder
   eventType?: Prisma.SortOrder
   source?: Prisma.SortOrder
@@ -472,6 +494,7 @@ export type IntFieldUpdateOperationsInput = {
 
 
 export type AcceptedEventSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  schemaVersion?: boolean
   eventId?: boolean
   eventType?: boolean
   source?: boolean
@@ -485,6 +508,7 @@ export type AcceptedEventSelect<ExtArgs extends runtime.Types.Extensions.Interna
 }, ExtArgs["result"]["acceptedEvent"]>
 
 export type AcceptedEventSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  schemaVersion?: boolean
   eventId?: boolean
   eventType?: boolean
   source?: boolean
@@ -498,6 +522,7 @@ export type AcceptedEventSelectCreateManyAndReturn<ExtArgs extends runtime.Types
 }, ExtArgs["result"]["acceptedEvent"]>
 
 export type AcceptedEventSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  schemaVersion?: boolean
   eventId?: boolean
   eventType?: boolean
   source?: boolean
@@ -511,6 +536,7 @@ export type AcceptedEventSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
 }, ExtArgs["result"]["acceptedEvent"]>
 
 export type AcceptedEventSelectScalar = {
+  schemaVersion?: boolean
   eventId?: boolean
   eventType?: boolean
   source?: boolean
@@ -523,12 +549,13 @@ export type AcceptedEventSelectScalar = {
   payload?: boolean
 }
 
-export type AcceptedEventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"eventId" | "eventType" | "source" | "occurredAt" | "receivedAt" | "orderId" | "amountPaise" | "currency" | "paymentStatus" | "payload", ExtArgs["result"]["acceptedEvent"]>
+export type AcceptedEventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"schemaVersion" | "eventId" | "eventType" | "source" | "occurredAt" | "receivedAt" | "orderId" | "amountPaise" | "currency" | "paymentStatus" | "payload", ExtArgs["result"]["acceptedEvent"]>
 
 export type $AcceptedEventPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "AcceptedEvent"
   objects: {}
   scalars: runtime.Types.Extensions.GetPayloadResult<{
+    schemaVersion: string
     eventId: string
     eventType: string
     source: string
@@ -622,8 +649,8 @@ export interface AcceptedEventDelegate<ExtArgs extends runtime.Types.Extensions.
    * // Get first 10 AcceptedEvents
    * const acceptedEvents = await prisma.acceptedEvent.findMany({ take: 10 })
    * 
-   * // Only select the `eventId`
-   * const acceptedEventWithEventIdOnly = await prisma.acceptedEvent.findMany({ select: { eventId: true } })
+   * // Only select the `schemaVersion`
+   * const acceptedEventWithSchemaVersionOnly = await prisma.acceptedEvent.findMany({ select: { schemaVersion: true } })
    * 
    */
   findMany<T extends AcceptedEventFindManyArgs>(args?: Prisma.SelectSubset<T, AcceptedEventFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AcceptedEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -667,9 +694,9 @@ export interface AcceptedEventDelegate<ExtArgs extends runtime.Types.Extensions.
    *   ]
    * })
    * 
-   * // Create many AcceptedEvents and only return the `eventId`
-   * const acceptedEventWithEventIdOnly = await prisma.acceptedEvent.createManyAndReturn({
-   *   select: { eventId: true },
+   * // Create many AcceptedEvents and only return the `schemaVersion`
+   * const acceptedEventWithSchemaVersionOnly = await prisma.acceptedEvent.createManyAndReturn({
+   *   select: { schemaVersion: true },
    *   data: [
    *     // ... provide data here
    *   ]
@@ -758,9 +785,9 @@ export interface AcceptedEventDelegate<ExtArgs extends runtime.Types.Extensions.
    *   ]
    * })
    * 
-   * // Update zero or more AcceptedEvents and only return the `eventId`
-   * const acceptedEventWithEventIdOnly = await prisma.acceptedEvent.updateManyAndReturn({
-   *   select: { eventId: true },
+   * // Update zero or more AcceptedEvents and only return the `schemaVersion`
+   * const acceptedEventWithSchemaVersionOnly = await prisma.acceptedEvent.updateManyAndReturn({
+   *   select: { schemaVersion: true },
    *   where: {
    *     // ... provide filter here
    *   },
@@ -962,6 +989,7 @@ export interface Prisma__AcceptedEventClient<T, Null = never, ExtArgs extends ru
  * Fields of the AcceptedEvent model
  */
 export interface AcceptedEventFieldRefs {
+  readonly schemaVersion: Prisma.FieldRef<"AcceptedEvent", 'String'>
   readonly eventId: Prisma.FieldRef<"AcceptedEvent", 'String'>
   readonly eventType: Prisma.FieldRef<"AcceptedEvent", 'String'>
   readonly source: Prisma.FieldRef<"AcceptedEvent", 'String'>

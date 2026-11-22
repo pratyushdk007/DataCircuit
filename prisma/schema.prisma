@@ -12,6 +12,7 @@ datasource db {
 }
 
 model AcceptedEvent {
+  schemaVersion String @default("payment.v1")
   eventId       String   @id
   eventType     String
   source        String

@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 
 import { prisma } from "../config/prisma.js";
 import { validateEvent } from "../validators/event.validator.js";
-
+import {evaluateAmountAnomaly} from "./quality.service.js";
 export async function ingestEvent(event) {
   const eventId =
     typeof event?.eventId === "string"
@@ -22,7 +22,30 @@ export async function ingestEvent(event) {
       };
     }
   }
+const anomaly = await evaluateAmountAnomaly(
+  event.payload.amountPaise
+);
 
+if (anomaly.isAnomaly) {
+  const record = await prisma.quarantinedEvent.create({
+    data: {
+      id: randomUUID(),
+      eventId,
+
+      reasons: [
+        `${anomaly.code}: ${anomaly.message}`
+      ],
+
+      rawEvent: event
+    }
+  });
+
+  return {
+    type: "quarantined",
+    record,
+    category: "STATISTICAL_ANOMALY"
+  };
+}
   // Validate incoming event.
   const errors = validateEvent(event);
 
@@ -32,7 +55,9 @@ export async function ingestEvent(event) {
       data: {
         id: randomUUID(),
         eventId,
-        reasons: errors,
+         reasons: errors.map(
+        issue => `${issue.code}: ${issue.message}`
+      ),
         rawEvent: event ?? {}
       }
     });
@@ -48,6 +73,7 @@ export async function ingestEvent(event) {
     const record = await prisma.acceptedEvent.create({
       data: {
         eventId,
+        schemaVersion: event.schemaVersion,
         eventType: event.eventType,
         source: event.source,
         occurredAt: new Date(event.occurredAt),

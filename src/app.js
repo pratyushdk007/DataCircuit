@@ -1,11 +1,13 @@
 import express from "express";
 import eventsRouter from "./routes/events.routes.js";
+import qualityRouter from "./routes/quality.routes.js";
 
 const app = express();
 
 // Allows Express to understand JSON requests.
 app.use(express.json({ limit: "100kb" }));
-
+app.use("/api/v1/quality", qualityRouter);
+app.use("/api/v1/quality", qualityRouter);
 // Health check
 app.get("/health", (req, res) => {
   res.status(200).json({
